@@ -10,10 +10,10 @@ import java.awt.Point;
  *
  * @author Deepal
  */
-public class HealthPack extends GameObject{
+public class LifePack extends GameObject{
     public int healthBonus;
     
-    public HealthPack(int x,int y){
+    public LifePack(int x,int y){
         super(x, y);
         this.type="health_pack";
     }

@@ -6,6 +6,8 @@ package UI;
 
 import GameObjects.Bot;
 import GameObjects.BrickWall;
+import GameObjects.CoinPile;
+import GameObjects.LifePack;
 import GameObjects.StoneWall;
 import GameObjects.Water;
 import java.awt.Point;
@@ -22,6 +24,8 @@ public class MessageDecorder {
     public ArrayList<BrickWall> bricks;
     public ArrayList<Water> water;
     public ArrayList<StoneWall> stoneWall;
+    public ArrayList<CoinPile> coins;
+    public ArrayList<LifePack> lifePacks;
     int playerNo;
     public int playerCount;
     public String message;
@@ -197,15 +201,25 @@ public class MessageDecorder {
     }
     
     public void lifePackMessage(){
-        System.out.println("Life pack message");
+        String msg=this.message.split("#")[0];
+        int x,y,lifeTime;
+        x=Integer.parseInt(((msg.split(":")[1]).split(",")[0]));
+        y=Integer.parseInt(((msg.split(":")[1]).split(",")[1]));
+        lifeTime=Integer.parseInt(msg.split(":")[2]);       
     }
     
     public void coinMessage(){
-        System.out.println("Coin message");
+        String msg=this.message.split("#")[0];
+        int x,y,lifeTime,value;
+        x=Integer.parseInt(((msg.split(":")[1]).split(",")[0]));
+        y=Integer.parseInt(((msg.split(":")[1]).split(",")[1]));
+        lifeTime=Integer.parseInt(msg.split(":")[2]);  
+        value=Integer.parseInt(msg.split(":")[3]);
+        
     }
     
     //this main method is for testing purposes
     public static void main(String args[]){
-        new MessageDecorder("G:P0;6,5;3;1;110;0;0:P1;1,7;3;0;100;936;936:P2;5,5;3;0;70;0;0:P3;9,7;1;0;100;0;0:P4;4,5;1;0;100;940;940:7,2,0;1,4,0;8,6,0;0,8,0;2,4,0;7,6,0;9,3,0;1,3,0;3,2,0#");
+        new MessageDecorder("L:6,4:17632#");
     }
 }
