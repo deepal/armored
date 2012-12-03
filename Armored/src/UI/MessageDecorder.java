@@ -27,11 +27,11 @@ public class MessageDecorder {
     public String message;
     public MessageDecorder(String message){
         bots=new Bot[5];
-        
         //test - define the bots[] array to test globalupdate() alone
             for(int k=0;k<5;k++){
                 bots[k]=new Bot();
             }
+            bricks=new ArrayList<BrickWall>();
         //test over 
         
         
@@ -143,8 +143,9 @@ public class MessageDecorder {
         playerCount=5;
         System.out.println("Global Update");
         String[] dataset=message.split(":");
+        String[] brickset;        
         String coordinate;
-        int x,y,direction,shoots,health,coins,points;
+        int x,y,damageLevel,direction,shoots,health,coins,points;
         for(int i=1;i<=playerCount;i++){
             coordinate=dataset[i].split(";")[1];
             x=Integer.parseInt(coordinate.split(",")[0]);
@@ -157,18 +158,40 @@ public class MessageDecorder {
             this.bots[i-1].coins=Integer.parseInt(dataset[i].split(";")[5]);
             this.bots[i-1].points=Integer.parseInt(dataset[i].split(";")[6]);
         }
-        System.out.println(playerCount);
+        
+        dataset[playerCount+1]=dataset[playerCount+1].split("#")[0];
+        brickset=dataset[playerCount+1].split(";");
+        bricks.clear();
+        for(int i=0;i<brickset.length;i++){
+            x=Integer.parseInt(brickset[i].split(",")[0]);
+            y=Integer.parseInt(brickset[i].split(",")[1]);
+            damageLevel=Integer.parseInt(brickset[i].split(",")[2]);         
+            bricks.add(new BrickWall(x, y,damageLevel));          
+        }
+        
         //test-------------------------------------------------------------------
-        for(int i=0;i<playerCount;i++){
-            System.out.println("Bot "+i);
-            System.out.println("\tCoordinates : "+bots[i].x+","+bots[i].y);
-            System.out.println("\tDirection   : "+bots[i].direction);
-            System.out.println("\tShoots      : "+bots[i].shoots);
-            System.out.println("\tHealth      : "+bots[i].health);
-            System.out.println("\tCoins       : "+bots[i].coins);
-            System.out.println("\tPoints      : "+bots[i].points);
+        for(int i=0;i<bricks.size();i++){
+            System.out.println("Brick "+(i));
+            System.out.println("\tx = "+bricks.get(i).x);
+            System.out.println("\ty = "+bricks.get(i).y);
+            System.out.println("\tdamage level = "+bricks.get(i).damageLevel);                   
         }
         //test over--------------------------------------------------------------
+        
+        
+        
+//        //test-------------------------------------------------------------------
+//        System.out.println(playerCount);
+//        for(int i=0;i<playerCount;i++){
+//            System.out.println("Bot "+i);
+//            System.out.println("\tCoordinates : "+bots[i].x+","+bots[i].y);
+//            System.out.println("\tDirection   : "+bots[i].direction);
+//            System.out.println("\tShoots      : "+bots[i].shoots);
+//            System.out.println("\tHealth      : "+bots[i].health);
+//            System.out.println("\tCoins       : "+bots[i].coins);
+//            System.out.println("\tPoints      : "+bots[i].points);
+//        }
+//        //test over--------------------------------------------------------------
         
         
     }
