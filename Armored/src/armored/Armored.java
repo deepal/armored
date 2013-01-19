@@ -5,6 +5,7 @@
 package armored;
 
 import Game.ControlPanel;
+import GameObjects.LifePack;
 import Networking.Receiver;
 import Networking.Sender;
 
@@ -23,6 +24,6 @@ public class Armored {
         //(new Sender("localhost", 6000)).start();
         //(new Receiver("localhost", 7000)).start();
         new ControlPanel();
-
+        
     }
 }
