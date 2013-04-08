@@ -10,9 +10,12 @@ import java.awt.Point;
  *
  * @author Deepal
  */
-public class Water extends GameObject{
+public class Water{
+    public String type;
+    public Point location;
     public Water(int x,int y){
-        super(x, y);
+        this.location.x=x;
+        this.location.y=y;
         this.type="water";
     }
 }

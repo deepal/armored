@@ -10,9 +10,12 @@ import java.awt.Point;
  *
  * @author Deepal
  */
-public class StoneWall extends GameObject{
+public class StoneWall{
+    public Point location;
+    public String type;
     public StoneWall(int x,int y){
-        super(x, y);
+        location.x=x;
+        location.y=y;
         this.type="stone_wall";
     }
 }

@@ -10,17 +10,21 @@ import java.awt.Point;
  *
  * @author Deepal
  */
-public class BrickWall extends GameObject{
+public class BrickWall{
     public int damageLevel;
+    public String type;
+    public Point location;
     
     public BrickWall(int x,int y){
-        super(x,y);
+        this.location.x=x;
+        this.location.y=y;
         this.type="brick_wall";
         this.damageLevel=0;
     }
     
     public BrickWall(int x,int y,int damage){
-        super(x, y);
+        this.location.x=x;
+        this.location.y=y;
         this.type="brick_wall";
         this.damageLevel=damage;
     }

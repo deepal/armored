@@ -12,29 +12,45 @@ import java.util.logging.Logger;
  *
  * @author Deepal
  */
-public class LifePack extends GameObject implements Runnable{
+public class LifePack extends Thread{
     public int healthBonus;
-    public int lifeTime;
+    public int lifetime;
+    public String type;
+    public Point location;
+    public boolean visible;
     
     public LifePack(int x,int y,int lifetime){
-        super(x, y);
-        this.lifeTime=lifetime;
+        location=new Point(x, y);
+        this.lifetime=lifetime;
         this.type="health_pack";
+        this.visible=true;
+        this.start();
+        
     }
     
     public void run(){
         while(true){
-            if(this.lifeTime==0){
-                System.out.println("Life Pack Disappeared!");
+            if(this.lifetime>0){
+                try{
+                    Thread.sleep(1);
+                    System.out.println("Life pack will be disappeared in "+this.lifetime+" ms");
+                    this.lifetime--;
+                }
+                catch(Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+            else{
+                this.visible=false;
+                this.interrupt();
                 break;
             }
-            try {
-                this.lifeTime--;
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(LifePack.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
+        System.out.println("Life pack visibility = "+this.visible);
+    }
+    
+    public static void main(String args[]){
+        LifePack lp=new LifePack(1, 1, 10);
     }
     
     
