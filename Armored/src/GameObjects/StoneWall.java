@@ -14,8 +14,7 @@ public class StoneWall{
     public Point location;
     public String type;
     public StoneWall(int x,int y){
-        location.x=x;
-        location.y=y;
+        location=new Point(x, y);
         this.type="stone_wall";
     }
 }

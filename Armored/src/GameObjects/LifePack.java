@@ -33,7 +33,9 @@ public class LifePack extends Thread{
             if(this.lifetime>0){
                 try{
                     Thread.sleep(1);
-                    System.out.println("Life pack will be disappeared in "+this.lifetime+" ms");
+                    if(lifetime%1000==0){
+                        System.out.println("Life pack will be disappeared in "+this.lifetime/1000+" ms");
+                    }
                     this.lifetime--;
                 }
                 catch(Exception ex){
@@ -50,7 +52,7 @@ public class LifePack extends Thread{
     }
     
     public static void main(String args[]){
-        LifePack lp=new LifePack(1, 1, 10);
+        LifePack lp=new LifePack(1, 1, 15000);
     }
     
     

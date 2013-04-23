@@ -56,7 +56,7 @@ public class Map extends Thread {
     //this main method is for testing purpose
     public static void main(String args[]){
         Map mp=new Map();
-
+        
     }
     //this main method is for testing purpose
 }

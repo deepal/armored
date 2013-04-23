@@ -12,6 +12,7 @@ import GameObjects.StoneWall;
 import GameObjects.Water;
 import java.awt.Point;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -40,17 +41,28 @@ public class MessageDecorder {
         
         
         this.message=message;
-        char messageType=message.charAt(0);        
-        switch(messageType){
-            case 'I': initiationMessage();break;
-            case 'S': startMessage();break;
-            case 'G': globalUpdate();break;
-            case 'L': lifePackMessage();break;
-            case 'C': coinMessage();break;
-            default: System.out.println("Unknown Message!!");
-        }    
+        char messageType=message.charAt(0);
+        
+        if(message.equals("PITFALL#")){
+            System.err.println("Game Over!!!!!");
+            System.exit(0);
+        }
+        else{
+            switch(messageType){
+                case 'I': initiationMessage();break;
+                case 'S': startMessage();break;
+                case 'G': globalUpdate();break;
+                case 'L': lifePackMessage();break;
+                case 'C': coinMessage();break;
+                default: System.out.println("Unknown Message!!");
+            }
+        }
+
+        
     }
-    
+    public void gameLostMessage(){
+        System.err.println("Game Over!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
     public void initiationMessage(){
         System.out.println("Initiation message");
         int x,y;
@@ -220,6 +232,6 @@ public class MessageDecorder {
     
     //this main method is for testing purposes
     public static void main(String args[]){
-        new MessageDecorder("L:6,4:17632#");
+        new MessageDecorder("PITFALL#");
     }
 }

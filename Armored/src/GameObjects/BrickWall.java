@@ -16,15 +16,13 @@ public class BrickWall{
     public Point location;
     
     public BrickWall(int x,int y){
-        this.location.x=x;
-        this.location.y=y;
+        location=new Point(x, y);
         this.type="brick_wall";
         this.damageLevel=0;
     }
     
     public BrickWall(int x,int y,int damage){
-        this.location.x=x;
-        this.location.y=y;
+        location=new Point(x, y);
         this.type="brick_wall";
         this.damageLevel=damage;
     }

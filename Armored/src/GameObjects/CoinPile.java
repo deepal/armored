@@ -30,7 +30,9 @@ public class CoinPile extends Thread{
             if(this.lifetime>0){
                try{
                     Thread.sleep(1);
-                    System.out.println("Coin pile will disappear in "+lifetime+" ms");
+                    if(lifetime%1000==0){
+                        System.out.println("Coin pile will disappear in "+lifetime/1000+" ms");
+                    }
                     this.lifetime--;
                 }
                 catch(Exception ex){
