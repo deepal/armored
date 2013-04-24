@@ -21,31 +21,39 @@ import javax.swing.JOptionPane;
 public class MessageDecorder {
     
     public Location[] players;
-    public Bot[] bots;
-    public ArrayList<BrickWall> bricks;
-    public ArrayList<Water> water;
-    public ArrayList<StoneWall> stoneWall;
-    public ArrayList<CoinPile> coins;
-    public ArrayList<LifePack> lifePacks;
+    public static Bot[] bots;
+    public static ArrayList<BrickWall> bricks;
+    public static ArrayList<Water> water;
+    public static ArrayList<StoneWall> stoneWall;
+    public static ArrayList<CoinPile> coins;
+    public static ArrayList<LifePack> lifePacks;
     int playerNo;
-    public int playerCount;
+    public static int playerCount;
     public String message;
-    public MessageDecorder(String message){
+    
+    public MessageDecorder(){
         bots=new Bot[5];
-        //test - define the bots[] array to test globalupdate() alone
-            for(int k=0;k<5;k++){
-                bots[k]=new Bot();
-            }
-            bricks=new ArrayList<BrickWall>();
-        //test over 
-        
-        
+        for(int k=0;k<5;k++){
+            bots[k]=new Bot();
+        }
+        bricks=new ArrayList<BrickWall>();
+        water= new ArrayList<Water>();
+        stoneWall =new ArrayList<StoneWall>();
+        coins = new ArrayList<CoinPile>();
+        lifePacks = new ArrayList<LifePack>();
+      
+    }
+    
+    public void processMessage(String message){
         this.message=message;
         char messageType=message.charAt(0);
         
         if(message.equals("PITFALL#")){
             System.err.println("Game Over!!!!!");
             System.exit(0);
+        }
+        else if(message.equals("GAME_NOT_STARTED_YET#")){
+            System.out.println("Game not started yet!");
         }
         else{
             switch(messageType){
@@ -57,14 +65,15 @@ public class MessageDecorder {
                 default: System.out.println("Unknown Message!!");
             }
         }
-
-        
     }
+    
+    
     public void gameLostMessage(){
         System.err.println("Game Over!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
+    
     public void initiationMessage(){
-        System.out.println("Initiation message");
+        System.err.println("[*] Initiation Message");
         int x,y;
         bricks=new ArrayList<BrickWall>();
         water=new ArrayList<Water>();
@@ -126,7 +135,7 @@ public class MessageDecorder {
     
     
     public void startMessage(){
-        //System.out.println("Start message");
+        System.err.println("[*] Start Message");
         players             = new Location[5];
         String[] commands   = message.split("#");
         String[] part       = commands[0].split(":");
@@ -156,9 +165,14 @@ public class MessageDecorder {
     }
     
     public void globalUpdate(){
-        playerCount=5;
-        System.out.println("Global Update");
-        String[] dataset=message.split(":");
+        System.err.println("[*] Global Update");
+        playerCount=0;
+        for(int i=0;i<message.length();i++){
+            if(message.charAt(i)=='P'){
+                playerCount++;
+            }
+        }
+        String[] dataset=message.split(":");      
         String[] brickset;        
         String coordinate;
         int x,y,damageLevel,direction,shoots,health,coins,points;
@@ -213,25 +227,29 @@ public class MessageDecorder {
     }
     
     public void lifePackMessage(){
+        System.err.println("[*] Life Pack update");
         String msg=this.message.split("#")[0];
         int x,y,lifeTime;
         x=Integer.parseInt(((msg.split(":")[1]).split(",")[0]));
         y=Integer.parseInt(((msg.split(":")[1]).split(",")[1]));
-        lifeTime=Integer.parseInt(msg.split(":")[2]);       
+        lifeTime=Integer.parseInt(msg.split(":")[2]);  
+        lifePacks.add(new LifePack(x, y, lifeTime));
     }
     
     public void coinMessage(){
+        System.err.println("[*] Coin pile update");
         String msg=this.message.split("#")[0];
         int x,y,lifeTime,value;
         x=Integer.parseInt(((msg.split(":")[1]).split(",")[0]));
         y=Integer.parseInt(((msg.split(":")[1]).split(",")[1]));
         lifeTime=Integer.parseInt(msg.split(":")[2]);  
         value=Integer.parseInt(msg.split(":")[3]);
+        coins.add(new CoinPile(x, y, lifeTime, value));
         
     }
     
     //this main method is for testing purposes
     public static void main(String args[]){
-        new MessageDecorder("PITFALL#");
+        new MessageDecorder().processMessage("G:P0;0,0;0;0;100;0;0:5,8,0;7,8,0;2,6,0;6,8,0;8,6,0#");
     }
 }

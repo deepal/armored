@@ -4,9 +4,11 @@
  */
 package GameObjects;
 
+import UI.MessageDecorder;
 import java.awt.Point;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  *
@@ -30,11 +32,22 @@ public class LifePack extends Thread{
     
     public void run(){
         while(true){
+            for(int i=0;i< MessageDecorder.playerCount;i++){
+                if(MessageDecorder.bots[i].x==this.location.x && MessageDecorder.bots[i].y==this.location.y){
+                    System.out.println("Lifepack "+this.getId()+" acquired by Bot-"+i);
+                    this.visible=false;
+                    this.interrupt();
+                    break;
+                }
+            }
+            if(this.visible==false){
+                break;
+            }
             if(this.lifetime>0){
                 try{
                     Thread.sleep(1);
                     if(lifetime%1000==0){
-                        System.out.println("Life pack will be disappeared in "+this.lifetime/1000+" ms");
+                        System.out.println("Life pack "+this.getId()+" will be disappeared in "+this.lifetime/1000+" s");
                     }
                     this.lifetime--;
                 }
