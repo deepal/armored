@@ -207,12 +207,12 @@ public class MessageDecorder {
         }
         
         //test-------------------------------------------------------------------
-        for(int i=0;i<bricks.size();i++){
-            System.out.println("Brick "+(i));
-            System.out.println("\tx = "+bricks.get(i).location.x);
-            System.out.println("\ty = "+bricks.get(i).location.y);
-            System.out.println("\tdamage level = "+bricks.get(i).damageLevel);                   
-        }
+//        for(int i=0;i<bricks.size();i++){
+//            System.out.println("Brick "+(i));
+//            System.out.println("\tx = "+bricks.get(i).location.x);
+//            System.out.println("\ty = "+bricks.get(i).location.y);
+//            System.out.println("\tdamage level = "+bricks.get(i).damageLevel);                   
+//        }
         //test over--------------------------------------------------------------
         
         

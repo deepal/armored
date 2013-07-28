@@ -59,15 +59,6 @@ public class Play extends BasicGameState {
                 //grphcs.drawString(i+","+j, i*48, j*48);
             }
         }
-//        tree.draw(5 * 48, 7 * 48);
-//        tree.draw(0, 0);
-//        tree.draw(3 * 48, 1 * 48);
-//        tree.draw(0, 1 * 48);
-//        tree.draw(8 * 48, 9 * 48);
-//        tree.draw(6 * 48, 3 * 48);
-//        tree.draw(6 * 48, 7 * 48);
-//        water.draw(5 * 48, 5 * 48);
-//        grphcs.drawImage(tank, xPos, yPos);
         updateTexture();
         
         
@@ -75,41 +66,41 @@ public class Play extends BasicGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        Input input = gc.getInput();
-
-        if (input.isKeyPressed(Input.KEY_UP)) {
-            moveUp();
-        }
-        if (input.isKeyPressed(Input.KEY_DOWN)) {
-            moveDown();
-        }
-        if (input.isKeyPressed(Input.KEY_LEFT)) {
-            moveLeft();
-        }
-        if (input.isKeyPressed(Input.KEY_RIGHT)) {
-            moveRight();
-        }
+//        Input input = gc.getInput();
+//
+//        if (input.isKeyPressed(Input.KEY_UP)) {
+//            moveUp();
+//        }
+//        if (input.isKeyPressed(Input.KEY_DOWN)) {
+//            moveDown();
+//        }
+//        if (input.isKeyPressed(Input.KEY_LEFT)) {
+//            moveLeft();
+//        }
+//        if (input.isKeyPressed(Input.KEY_RIGHT)) {
+//            moveRight();
+//        }
     }
 
-    public void moveUp() throws SlickException {
-        tank = new Image("res/p5-up.png");
-        yPos -= 48;
-    }
-
-    public void moveDown() throws SlickException {
-        tank = new Image("res/p5-down.png");
-        yPos += 48;
-    }
-
-    public void moveLeft() throws SlickException {
-        tank = new Image("res/p5-left.png");
-        xPos -= 48;
-    }
-
-    public void moveRight() throws SlickException {
-        tank = new Image("res/p5-right.png");
-        xPos += 48;
-    }
+//    public void moveUp() throws SlickException {
+//        tank = new Image("res/p5-up.png");
+//        yPos -= 48;
+//    }
+//
+//    public void moveDown() throws SlickException {
+//        tank = new Image("res/p5-down.png");
+//        yPos += 48;
+//    }
+//
+//    public void moveLeft() throws SlickException {
+//        tank = new Image("res/p5-left.png");
+//        xPos -= 48;
+//    }
+//
+//    public void moveRight() throws SlickException {
+//        tank = new Image("res/p5-right.png");
+//        xPos += 48;
+//    }
 
     public boolean isBlocked() {
         return true;
@@ -117,6 +108,7 @@ public class Play extends BasicGameState {
     
     public void updateTexture() throws SlickException{
         drawBots();
+        drawLand();
     }
     
     public void drawBots() throws SlickException{  
@@ -144,17 +136,43 @@ public class Play extends BasicGameState {
     }
     
     public void drawLand() throws SlickException{
-        Image brickwall = null;
+        Image brickwall = null, stonewall = null, water = null, coin = null, healthpack = null;
+        BrickWall tempBrickWall = null;
         for(int i=0;i<MessageDecorder.bricks.size();i++){
-            switch(MessageDecorder.bricks.get(i).damageLevel){
+            tempBrickWall = MessageDecorder.bricks.get(i);
+            switch(tempBrickWall.damageLevel){
                 case 0:
-                    brickwall = new Image("");
+                    brickwall = new Image("res/brick.jpg");break;
+                case 1:
+                    brickwall = new Image("res/brick-d1.png");break;
+                case 2:
+                    brickwall = new Image("res/brick-d2.png");break;
+                case 3:
+                    brickwall = new Image("res/brick-d3.png");break;
+                case 4:
+                    brickwall = new Image("res/brick-d4.png");break;
+                default:
+                    System.err.println("This damage level not specified!!!!!!!!");
             }
+            brickwall.draw(tempBrickWall.location.x*48, tempBrickWall.location.y*48);
         }
+        
+        for(int i=0;i<MessageDecorder.stoneWall.size();i++){
+            stonewall = new Image("res/tree.png");
+            stonewall.draw((MessageDecorder.stoneWall.get(i)).location.x*48, (MessageDecorder.stoneWall.get(i)).location.y*48);
+        }
+        
+        for(int i=0;i<MessageDecorder.water.size();i++){
+            water = new Image("res/water.png");
+            water.draw((MessageDecorder.water.get(i)).location.x*48, (MessageDecorder.water.get(i)).location.y*48);
+        }
+        
     }
     
     public void drawTreasure(Graphics g) throws SlickException{
-        
+        for(int i=0;i<MessageDecorder.coins.size();i++){
+            
+        }
     }
     
     public void drawHealthPacks(Graphics g) throws SlickException{
