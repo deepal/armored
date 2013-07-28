@@ -239,8 +239,10 @@ public class MessageDecorder {
         int x,y,lifeTime;
         x=Integer.parseInt(((msg.split(":")[1]).split(",")[0]));
         y=Integer.parseInt(((msg.split(":")[1]).split(",")[1]));
-        lifeTime=Integer.parseInt(msg.split(":")[2]);  
-        lifePacks.add(new LifePack(x, y, lifeTime));
+        lifeTime=Integer.parseInt(msg.split(":")[2]); 
+        LifePack lp = new LifePack(x, y, lifeTime);
+        lp.start();
+        lifePacks.add(lp);
     }
     
     public void coinMessage(){
@@ -251,7 +253,9 @@ public class MessageDecorder {
         y=Integer.parseInt(((msg.split(":")[1]).split(",")[1]));
         lifeTime=Integer.parseInt(msg.split(":")[2]);  
         value=Integer.parseInt(msg.split(":")[3]);
-        coins.add(new CoinPile(x, y, lifeTime, value));
+        CoinPile cp = new CoinPile(x, y, lifeTime, value);
+        cp.start();
+        coins.add(cp);
     }
     
     //this main method is for testing purposes

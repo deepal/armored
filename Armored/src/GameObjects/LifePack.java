@@ -26,14 +26,14 @@ public class LifePack extends Thread{
         this.lifetime=lifetime;
         this.type="health_pack";
         this.visible=true;
-        this.start();
+        //this.start();
         
     }
     
     public void run(){
         while(true){
             for(int i=0;i< MessageDecorder.playerCount;i++){
-                if(MessageDecorder.bots[i].x==this.location.x && MessageDecorder.bots[i].y==this.location.y){
+                if(MessageDecorder.bots[i].x==this.location.x && MessageDecorder.bots[i].y==this.location.y && this.visible){
                     System.out.println("Lifepack "+this.getId()+" acquired by Bot-"+i);
                     this.visible=false;
                     this.interrupt();
@@ -45,7 +45,7 @@ public class LifePack extends Thread{
             }
             if(this.lifetime>0){
                 try{
-                    Thread.sleep(1);
+                    this.sleep(1);
                     if(lifetime%1000==0){
                         System.out.println("Life pack "+this.getId()+" will be disappeared in "+this.lifetime/1000+" s");
                     }
@@ -58,15 +58,13 @@ public class LifePack extends Thread{
             else{
                 this.visible=false;
                 this.interrupt();
+                
                 break;
             }
         }
         System.out.println("Life pack visibility = "+this.visible);
     }
     
-    public static void main(String args[]){
-        LifePack lp=new LifePack(1, 1, 15000);
-    }
     
     
 }

@@ -5,6 +5,8 @@
 package UI;
 
 import GameObjects.BrickWall;
+import GameObjects.CoinPile;
+import GameObjects.LifePack;
 import Networking.Receiver;
 import Networking.Sender;
 import java.awt.Point;
@@ -12,7 +14,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 import UI.MessageDecorder;
 import java.util.Iterator;
-
+import sun.swing.UIAction;
+import UI.Game;
 
 /**
  *
@@ -53,9 +56,9 @@ public class Play extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
 
 //        grphcs.drawString(mouse, 50, 50);
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                grassland.draw(i * 48, j * 48);
+        for (int i = 0; i < UI.Game.GRID_PARAMETER; i++) {
+            for (int j = 0; j < UI.Game.GRID_PARAMETER; j++) {
+                grassland.draw(i * Game.CELL_WIDTH, j * Game.CELL_WIDTH);
                 //grphcs.drawString(i+","+j, i*48, j*48);
             }
         }
@@ -109,6 +112,7 @@ public class Play extends BasicGameState {
     public void updateTexture() throws SlickException{
         drawBots();
         drawLand();
+        drawTreasure();
     }
     
     public void drawBots() throws SlickException{  
@@ -131,12 +135,12 @@ public class Play extends BasicGameState {
                     System.err.println("What direction is that???");
                     
             }
-            bot.draw(MessageDecorder.bots[i].x*48,MessageDecorder.bots[i].y*48);            
+            bot.draw(MessageDecorder.bots[i].x*Game.CELL_WIDTH,MessageDecorder.bots[i].y*Game.CELL_WIDTH);            
         }
     }
     
     public void drawLand() throws SlickException{
-        Image brickwall = null, stonewall = null, water = null, coin = null, healthpack = null;
+        Image brickwall = null, stonewall = null, water = null;
         BrickWall tempBrickWall = null;
         for(int i=0;i<MessageDecorder.bricks.size();i++){
             tempBrickWall = MessageDecorder.bricks.get(i);
@@ -154,28 +158,47 @@ public class Play extends BasicGameState {
                 default:
                     System.err.println("This damage level not specified!!!!!!!!");
             }
-            brickwall.draw(tempBrickWall.location.x*48, tempBrickWall.location.y*48);
+            brickwall.draw(tempBrickWall.location.x*Game.CELL_WIDTH, tempBrickWall.location.y*Game.CELL_WIDTH);
         }
         
         for(int i=0;i<MessageDecorder.stoneWall.size();i++){
             stonewall = new Image("res/tree.png");
-            stonewall.draw((MessageDecorder.stoneWall.get(i)).location.x*48, (MessageDecorder.stoneWall.get(i)).location.y*48);
+            stonewall.draw((MessageDecorder.stoneWall.get(i)).location.x*Game.CELL_WIDTH, (MessageDecorder.stoneWall.get(i)).location.y*Game.CELL_WIDTH);
         }
         
         for(int i=0;i<MessageDecorder.water.size();i++){
             water = new Image("res/water.png");
-            water.draw((MessageDecorder.water.get(i)).location.x*48, (MessageDecorder.water.get(i)).location.y*48);
+            water.draw((MessageDecorder.water.get(i)).location.x*Game.CELL_WIDTH, (MessageDecorder.water.get(i)).location.y*Game.CELL_WIDTH);
         }
         
     }
     
-    public void drawTreasure(Graphics g) throws SlickException{
+    public void drawTreasure() throws SlickException{
+        Image coin = null, healthpack = null;
         for(int i=0;i<MessageDecorder.coins.size();i++){
-            
+            CoinPile cp = MessageDecorder.coins.get(i);
+            if(cp.visible){
+                coin = new Image("res/coins.png");
+                coin.draw(cp.location.x*Game.CELL_WIDTH, MessageDecorder.coins.get(i).location.y*Game.CELL_WIDTH);
+            }
+            else{
+                coin = new Image("res/brick-d4.png");
+                coin.draw(cp.location.x*Game.CELL_WIDTH, MessageDecorder.coins.get(i).location.y*Game.CELL_WIDTH);
+            }
         }
-    }
-    
-    public void drawHealthPacks(Graphics g) throws SlickException{
+        
+        for(int i=0;i<MessageDecorder.lifePacks.size();i++){
+            LifePack lp= MessageDecorder.lifePacks.get(i);
+            if(lp.visible){
+                healthpack = new Image("res/healthpack.png");
+                healthpack.draw(lp.location.x*Game.CELL_WIDTH, MessageDecorder.lifePacks.get(i).location.y*Game.CELL_WIDTH);
+            }
+            else{
+                healthpack = new Image("res/brick-d4.png");
+                healthpack.draw(lp.location.x*Game.CELL_WIDTH, MessageDecorder.lifePacks.get(i).location.y*Game.CELL_WIDTH);
+            }
+        }
         
     }
+
 }

@@ -24,13 +24,13 @@ public class CoinPile extends Thread{
         this.lifetime=lifetime;
         this.visible=true;
         this.value=value;
-        this.start();
+        //this.start();
     }
     
     public void run(){
         while(true){
             for(int i=0;i< MessageDecorder.playerCount;i++){
-                if(MessageDecorder.bots[i].x==this.location.x && MessageDecorder.bots[i].y==this.location.y){
+                if(MessageDecorder.bots[i].x==this.location.x && MessageDecorder.bots[i].y==this.location.y && this.visible){
                     System.out.println("Coinpile "+this.getId()+" acquired by Bot-"+i);
                     this.visible=false;
                     this.interrupt();
@@ -42,7 +42,7 @@ public class CoinPile extends Thread{
             }
             if(this.lifetime>0){
                try{
-                    Thread.sleep(1);
+                    this.sleep(1);
                     if(lifetime%1000==0){
                         System.out.println("Coin pile at "+this.getId()+" will disappear in "+lifetime/1000+" s");
                     }
@@ -55,6 +55,7 @@ public class CoinPile extends Thread{
             else{
                 this.visible=false;
                 this.interrupt();
+                
                 break;
             }         
         }
@@ -62,7 +63,4 @@ public class CoinPile extends Thread{
         
     }
     
-    public static void main(String args[]){
-        CoinPile cp=new CoinPile(1, 1, 11110,87);
-    }
 }

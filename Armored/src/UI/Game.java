@@ -17,8 +17,10 @@ public class Game extends StateBasedGame{
     public static final String GAME_NAME = "Armored";
     public static final int menu = 0;
     public static final int play = 1;
-    public static int WINDOW_HEIGHT = 480;
-    public static int WINDOW_WIDTH = 480;
+    public static int CELL_WIDTH = 48;
+    public static int GRID_PARAMETER = 20;
+    public static int WINDOW_HEIGHT = GRID_PARAMETER*CELL_WIDTH;
+    public static int WINDOW_WIDTH = GRID_PARAMETER*CELL_WIDTH;
     
     public Game(){
         super(GAME_NAME);
