@@ -117,6 +117,7 @@ public class ControlPanel extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnJoinGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinGameActionPerformed
+
         Sender messageSender;
         this.lblStatus.setText("Connecting....");
         messageSender=new Sender("localhost", 6000);
@@ -132,6 +133,7 @@ public class ControlPanel extends javax.swing.JFrame {
         this.lblStatus.setText("Connected");
         //this.btnJoinGame.setEnabled(false);
         new DemoMap();
+        
     }//GEN-LAST:event_btnJoinGameActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed

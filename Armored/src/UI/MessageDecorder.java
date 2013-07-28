@@ -4,6 +4,7 @@
  */
 package UI;
 
+import AI.Map;
 import GameObjects.Bot;
 import GameObjects.BrickWall;
 import GameObjects.CoinPile;
@@ -41,7 +42,6 @@ public class MessageDecorder {
         stoneWall =new ArrayList<StoneWall>();
         coins = new ArrayList<CoinPile>();
         lifePacks = new ArrayList<LifePack>();
-      
     }
     
     public void processMessage(String message){
@@ -53,7 +53,13 @@ public class MessageDecorder {
             System.exit(0);
         }
         else if(message.equals("GAME_NOT_STARTED_YET#")){
-            System.out.println("Game not started yet!");
+            System.out.println("Please wait! Game is about to start...");
+        }
+        else if(message.equals("GAME_ALREADY_STARTED#")){
+            System.out.println("You cannot join the game once it is started!");
+        }
+        else if(message.equals("TOO_QUICK#")){
+            
         }
         else{
             switch(messageType){
@@ -165,6 +171,7 @@ public class MessageDecorder {
     }
     
     public void globalUpdate(){
+        
         System.err.println("[*] Global Update");
         playerCount=0;
         for(int i=0;i<message.length();i++){
@@ -245,7 +252,6 @@ public class MessageDecorder {
         lifeTime=Integer.parseInt(msg.split(":")[2]);  
         value=Integer.parseInt(msg.split(":")[3]);
         coins.add(new CoinPile(x, y, lifeTime, value));
-        
     }
     
     //this main method is for testing purposes
