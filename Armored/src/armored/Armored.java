@@ -4,7 +4,6 @@
  */
 package armored;
 
-import AI.Map;
 import Game.ControlPanel;
 import GameObjects.LifePack;
 import Networking.Receiver;

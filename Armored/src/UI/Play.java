@@ -33,6 +33,11 @@ public class Play extends BasicGameState {
     public Play(int state) {
         xPos = 100;
         yPos = 100;
+        Sender messageSender;
+        messageSender=new Sender("localhost", 6000);
+        Receiver messageReceiver=new Receiver("localhost", 7000);
+        messageReceiver.start();
+        messageSender.sendMessage(Sender.JOIN);
     }
 
     @Override
@@ -42,13 +47,13 @@ public class Play extends BasicGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        tree = new Image("res/tree.png");
-        grassland = new Image("res/grass.png");
-        ground = new Image("res/ground.jpg");
-        water = new Image("res/water1.jpg");
-        brickwall = new Image("res/brick.jpg");
-        stonewall = new Image("res/rocks.png");
-        tank = new Image("res/p5-up.png");
+        tree = new Image("res/tree"+Game.CELL_WIDTH+".png");
+        grassland = new Image("res/grass"+Game.CELL_WIDTH+".png");
+        ground = new Image("res/ground"+Game.CELL_WIDTH+".jpg");
+        water = new Image("res/water1"+Game.CELL_WIDTH+".jpg");
+        brickwall = new Image("res/brick"+Game.CELL_WIDTH+".jpg");
+        stonewall = new Image("res/rocks"+Game.CELL_WIDTH+".png");
+        tank = new Image("res/p5-up"+Game.CELL_WIDTH+".png");
 
     }
 
@@ -120,16 +125,16 @@ public class Play extends BasicGameState {
         for(int i=0;i<MessageDecorder.playerCount;i++){
             switch(MessageDecorder.bots[i].direction){
                 case 0:
-                    bot = new Image("res/p"+(i+1)+"-up.png");
+                    bot = new Image("res/p"+(i+1)+"-up"+Game.CELL_WIDTH+".png");
                     break;
                 case 1:
-                    bot = new Image("res/p"+(i+1)+"-right.png");
+                    bot = new Image("res/p"+(i+1)+"-right"+Game.CELL_WIDTH+".png");
                     break;
                 case 2:
-                    bot = new Image("res/p"+(i+1)+"-down.png");
+                    bot = new Image("res/p"+(i+1)+"-down"+Game.CELL_WIDTH+".png");
                     break;
                 case 3:
-                    bot = new Image("res/p"+(i+1)+"-left.png");
+                    bot = new Image("res/p"+(i+1)+"-left"+Game.CELL_WIDTH+".png");
                     break;
                 default:
                     System.err.println("What direction is that???");
@@ -146,15 +151,15 @@ public class Play extends BasicGameState {
             tempBrickWall = MessageDecorder.bricks.get(i);
             switch(tempBrickWall.damageLevel){
                 case 0:
-                    brickwall = new Image("res/brick.jpg");break;
+                    brickwall = new Image("res/brick"+Game.CELL_WIDTH+".jpg");break;
                 case 1:
-                    brickwall = new Image("res/brick-d1.png");break;
+                    brickwall = new Image("res/brick-d1"+Game.CELL_WIDTH+".png");break;
                 case 2:
-                    brickwall = new Image("res/brick-d2.png");break;
+                    brickwall = new Image("res/brick-d2"+Game.CELL_WIDTH+".png");break;
                 case 3:
-                    brickwall = new Image("res/brick-d3.png");break;
+                    brickwall = new Image("res/brick-d3"+Game.CELL_WIDTH+".png");break;
                 case 4:
-                    brickwall = new Image("res/brick-d4.png");break;
+                    brickwall = new Image("res/brick-d4"+Game.CELL_WIDTH+".png");break;
                 default:
                     System.err.println("This damage level not specified!!!!!!!!");
             }
@@ -162,12 +167,12 @@ public class Play extends BasicGameState {
         }
         
         for(int i=0;i<MessageDecorder.stoneWall.size();i++){
-            stonewall = new Image("res/tree.png");
+            stonewall = new Image("res/tree"+Game.CELL_WIDTH+".png");
             stonewall.draw((MessageDecorder.stoneWall.get(i)).location.x*Game.CELL_WIDTH, (MessageDecorder.stoneWall.get(i)).location.y*Game.CELL_WIDTH);
         }
         
         for(int i=0;i<MessageDecorder.water.size();i++){
-            water = new Image("res/water.png");
+            water = new Image("res/water"+Game.CELL_WIDTH+".png");
             water.draw((MessageDecorder.water.get(i)).location.x*Game.CELL_WIDTH, (MessageDecorder.water.get(i)).location.y*Game.CELL_WIDTH);
         }
         
@@ -178,11 +183,11 @@ public class Play extends BasicGameState {
         for(int i=0;i<MessageDecorder.coins.size();i++){
             CoinPile cp = MessageDecorder.coins.get(i);
             if(cp.visible){
-                coin = new Image("res/coins.png");
+                coin = new Image("res/coins"+Game.CELL_WIDTH+".png");
                 coin.draw(cp.location.x*Game.CELL_WIDTH, MessageDecorder.coins.get(i).location.y*Game.CELL_WIDTH);
             }
             else{
-                coin = new Image("res/brick-d4.png");
+                coin = new Image("res/brick-d4"+Game.CELL_WIDTH+".png");
                 coin.draw(cp.location.x*Game.CELL_WIDTH, MessageDecorder.coins.get(i).location.y*Game.CELL_WIDTH);
             }
         }
@@ -190,15 +195,23 @@ public class Play extends BasicGameState {
         for(int i=0;i<MessageDecorder.lifePacks.size();i++){
             LifePack lp= MessageDecorder.lifePacks.get(i);
             if(lp.visible){
-                healthpack = new Image("res/healthpack.png");
+                healthpack = new Image("res/healthpack"+Game.CELL_WIDTH+".png");
                 healthpack.draw(lp.location.x*Game.CELL_WIDTH, MessageDecorder.lifePacks.get(i).location.y*Game.CELL_WIDTH);
             }
             else{
-                healthpack = new Image("res/brick-d4.png");
+                healthpack = new Image("res/brick-d4"+Game.CELL_WIDTH+".png");
                 healthpack.draw(lp.location.x*Game.CELL_WIDTH, MessageDecorder.lifePacks.get(i).location.y*Game.CELL_WIDTH);
             }
         }
         
+    }
+    
+    public void drawCannons(){
+        for(int i=0;i<MessageDecorder.playerCount;i++){
+            if(MessageDecorder.bots[i].shoots==1){
+                
+            }
+        }
     }
 
 }

@@ -4,7 +4,7 @@
  */
 package UI;
 
-import AI.Map;
+
 import GameObjects.Bot;
 import GameObjects.BrickWall;
 import GameObjects.CoinPile;
@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 public class MessageDecorder {
     
     public Location[] players;
+    
     public static Bot[] bots;
     public static ArrayList<BrickWall> bricks;
     public static ArrayList<Water> water;
