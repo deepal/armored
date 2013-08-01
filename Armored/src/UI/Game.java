@@ -22,7 +22,7 @@ public class Game extends StateBasedGame{
     public static int CELL_WIDTH = 32;
     public static int GRID_PARAMETER = 20;
     public static int WINDOW_HEIGHT = GRID_PARAMETER*CELL_WIDTH;
-    public static int WINDOW_WIDTH = GRID_PARAMETER*CELL_WIDTH;
+    public static int WINDOW_WIDTH = GRID_PARAMETER*CELL_WIDTH+400;
     
     public Game(){
         super(GAME_NAME);
@@ -35,6 +35,7 @@ public class Game extends StateBasedGame{
         try{            
             appgc = new AppGameContainer(new Game());
             appgc.setDisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT, false);
+            //appgc.setFullscreen(true);
             appgc.setTargetFrameRate(15);
             appgc.start();
         }

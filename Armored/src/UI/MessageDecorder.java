@@ -99,6 +99,7 @@ public class MessageDecorder {
         for(int i=0;i<brickCoordinates.length;i++){
             x=Integer.parseInt(brickCoordinates[i].split(",")[0]);
             y=Integer.parseInt(brickCoordinates[i].split(",")[1]);
+
             bricks.add(new BrickWall(x, y));
         }
         
@@ -106,6 +107,8 @@ public class MessageDecorder {
         for(int i=0;i<stoneCoordinates.length;i++){
             x=Integer.parseInt(stoneCoordinates[i].split(",")[0]);
             y=Integer.parseInt(stoneCoordinates[i].split(",")[1]);
+
+            
             stoneWall.add(new StoneWall(x, y));
         }
         
@@ -113,15 +116,13 @@ public class MessageDecorder {
         for(int i=0;i<waterCoordinates.length;i++){
             x=Integer.parseInt(waterCoordinates[i].split(",")[0]);
             y=Integer.parseInt(waterCoordinates[i].split(",")[1]);
+            
             water.add(new Water(x, y));
         }
         
     }
     
-    
-    
-    
-    
+
     public void startMessage(){
         System.err.println("[*] Start Message");
         System.out.println(message);
@@ -180,30 +181,29 @@ public class MessageDecorder {
             bricks.add(new BrickWall(x, y,damageLevel));          
         }
         
-        //test-------------------------------------------------------------------
-//        for(int i=0;i<bricks.size();i++){
-//            System.out.println("Brick "+(i));
-//            System.out.println("\tx = "+bricks.get(i).location.x);
-//            System.out.println("\ty = "+bricks.get(i).location.y);
-//            System.out.println("\tdamage level = "+bricks.get(i).damageLevel);                   
-//        }
-        //test over--------------------------------------------------------------
+        for(int i=0;i<MessageDecorder.coins.size();i++){
+            MessageDecorder.coins.set(i, new CoinPile(MessageDecorder.coins.get(i).location.x, MessageDecorder.coins.get(i).location.y, MessageDecorder.coins.get(i).lifetime-1000, MessageDecorder.coins.get(i).value));
+        }
         
+        for(int i=0;i<MessageDecorder.lifePacks.size();i++){
+            MessageDecorder.lifePacks.set(i, new LifePack(MessageDecorder.lifePacks.get(i).location.x, MessageDecorder.lifePacks.get(i).location.y, MessageDecorder.lifePacks.get(i).lifetime-1000));
+        }
         
-        
-//        //test-------------------------------------------------------------------
-//        System.out.println(playerCount);
-//        for(int i=0;i<playerCount;i++){
-//            System.out.println("Bot "+i);
-//            System.out.println("\tCoordinates : "+bots[i].x+","+bots[i].y);
-//            System.out.println("\tDirection   : "+bots[i].direction);
-//            System.out.println("\tShoots      : "+bots[i].shoots);
-//            System.out.println("\tHealth      : "+bots[i].health);
-//            System.out.println("\tCoins       : "+bots[i].coins);
-//            System.out.println("\tPoints      : "+bots[i].points);
-//        }
-//        //test over--------------------------------------------------------------
-        
+        for(int i=0;i<playerCount;i++){
+            for(int j=0;j<MessageDecorder.lifePacks.size();j++){
+                LifePack lp = MessageDecorder.lifePacks.get(j);
+                if((bots[i].x == lp.location.x) && (bots[i].y == lp.location.y)){
+                MessageDecorder.lifePacks.remove(j);
+            }
+            }
+            
+            for(int j=0;j<MessageDecorder.coins.size();j++){
+                CoinPile cp = MessageDecorder.coins.get(j);
+                if((bots[i].x == cp.location.x) && (bots[i].y == cp.location.y)){
+                    MessageDecorder.coins.remove(j);
+                }
+            }
+        }
         
     }
     
@@ -215,7 +215,7 @@ public class MessageDecorder {
         y=Integer.parseInt(((msg.split(":")[1]).split(",")[1]));
         lifeTime=Integer.parseInt(msg.split(":")[2]); 
         LifePack lp = new LifePack(x, y, lifeTime);
-        lp.start();
+//        lp.start();
         lifePacks.add(lp);
     }
     
@@ -228,7 +228,7 @@ public class MessageDecorder {
         lifeTime=Integer.parseInt(msg.split(":")[2]);  
         value=Integer.parseInt(msg.split(":")[3]);
         CoinPile cp = new CoinPile(x, y, lifeTime, value);
-        cp.start();
+        //cp.start();
         coins.add(cp);
     }
     
