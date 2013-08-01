@@ -19,8 +19,18 @@ import UI.MessageDecorder;
 import java.util.Iterator;
 import sun.swing.UIAction;
 import UI.Game;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.lwjgl.opencl.INTELImmediateExecution;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.openal.AL;
+import org.newdawn.slick.openal.Audio;
+import org.newdawn.slick.openal.AudioLoader;
+import org.newdawn.slick.util.ResourceLoader;
+import sun.misc.JavaxSecurityAuthKerberosAccess;
 
 /**
  *
@@ -201,9 +211,18 @@ public class Play extends BasicGameState {
 
     
     public void drawCannons() throws SlickException{
+        Bot bot=null;
         for(int i=0;i<MessageDecorder.playerCount;i++){
-            Bot bot = MessageDecorder.bots[i];
+            bot = MessageDecorder.bots[i];
             if(bot.shoots==1){
+                Audio boom;
+                try {
+                    boom = AudioLoader.getAudio("WAV", ResourceLoader.getResource("res/cannonboom.wav").openStream());
+                    boom.playAsSoundEffect(1.0f, 1.0f, false);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                
                 bullets.add(new Bullet(bot.x, bot.y, bot.direction));  
                 bot.shoots=0;
             }
@@ -215,15 +234,16 @@ public class Play extends BasicGameState {
         Image cannon = new Image("res/cannonball"+Game.CELL_WIDTH+".png");
         for(int i=0;i<bullets.size();i++){
             Bullet b=bullets.get(i);
-            b.blocked = isBlocked(b.x, b.y);
-            if(b.blocked){
-                cannon = new Image("res/brick-d4"+Game.CELL_WIDTH+".png");
+            
+            if(!isBlocked(b.x, b.y)){
+                cannon.draw((b.x)*Game.CELL_WIDTH, (b.y)*Game.CELL_WIDTH);
             }
-            else{
-                cannon = new Image("res/cannonball"+Game.CELL_WIDTH+".png");
+            else {
+                //(new Image("res/brick-d4"+Game.CELL_WIDTH+".png")).draw((b.x)*Game.CELL_WIDTH, (b.y)*Game.CELL_WIDTH);
+                bullets.set(i, new Bullet(100, 100, 0));
+                b.blocked = true;
             }
             
-            cannon.draw(b.x*Game.CELL_WIDTH, b.y*Game.CELL_WIDTH);
             switch(b.direction){
                 case 0:
                     b.y -= 0.3;break;
@@ -241,22 +261,22 @@ public class Play extends BasicGameState {
     
     public boolean isBlocked(float x, float y){
         for(int i=0;i<MessageDecorder.playerCount;i++){
-            if(Math.floor(x)==MessageDecorder.bots[i].x && Math.floor(y)==MessageDecorder.bots[i].y){
-                System.err.println("Bullet Blocked!");
+            if(Math.floor(x)==MessageDecorder.bots[i].x && Math.floor(y)==MessageDecorder.bots[i].y && (i!= MessageDecorder.myID)){
+                System.err.println("Bullet Blocked!!!!!!!!!!!");
                 return true;
             }
         }
         for(int i=0;i<MessageDecorder.bricks.size();i++){
             BrickWall br = MessageDecorder.bricks.get(i);
             if((Math.floor(x)==br.location.x && Math.floor(y)==br.location.y) && (br.damageLevel!=4)){
-                System.err.println("Bullet Blocked!");
+                System.err.println("Bullet Blocked!!!!!!!!!!!");
                 return true;
             }
         }
         for(int i=0;i<MessageDecorder.stoneWall.size();i++){
             StoneWall st = MessageDecorder.stoneWall.get(i);
             if(Math.floor(x)==st.location.x && Math.floor(y)==st.location.y){
-                System.err.println("Bullet Blocked!");
+                System.err.println("Bullet Blocked!!!!!!!!!!!");
                 return true;
             }
         }

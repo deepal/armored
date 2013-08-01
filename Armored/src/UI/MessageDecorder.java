@@ -90,6 +90,7 @@ public class MessageDecorder {
         String[] commands=message.split("#");
         String[] data=commands[0].split(":");
         String brickData,stoneData,waterData;
+        myID = Integer.parseInt(""+data[1].charAt(1));
         brickData=data[2];
         stoneData=data[3];
         waterData=data[4];
