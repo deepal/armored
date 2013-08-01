@@ -29,6 +29,8 @@ public class MessageDecorder {
     public static ArrayList<StoneWall> stoneWall;
     public static ArrayList<CoinPile> coins;
     public static ArrayList<LifePack> lifePacks;
+    public static int myID;
+    public static Point myLocation;
     int playerNo;
     public static int playerCount;
     public String message;
@@ -74,7 +76,6 @@ public class MessageDecorder {
         }
     }
     
-    
     public void gameLostMessage(){
         System.err.println("Game Over!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
@@ -114,27 +115,6 @@ public class MessageDecorder {
             water.add(new Water(x, y));
         }
         
-//        //test----------------------------------------------------------------------
-//        BrickWall bw;
-//        StoneWall sw;
-//        Water w;
-//        System.out.println("Brick coordinates");
-//        for(int i=0;i<bricks.size();i++){
-//            bw=(BrickWall)bricks.get(i);
-//            System.out.println(bw.x+","+bw.y);
-//        }
-//        System.out.println("Stone wall coordinates");
-//        for(int i=0;i<stoneWall.size();i++){
-//            sw=(StoneWall)stoneWall.get(i);
-//            System.out.println(sw.x+","+sw.y);
-//        }
-//        System.out.println("Water coordinates");
-//        for(int i=0;i<water.size();i++){
-//            w=(Water)water.get(i);
-//            System.out.println(w.x+","+w.y);
-//        }
-//        //test over-----------------------------------------------------------------
-        
     }
     
     
@@ -143,6 +123,7 @@ public class MessageDecorder {
     
     public void startMessage(){
         System.err.println("[*] Start Message");
+        System.out.println(message);
         players             = new Location[5];
         String[] commands   = message.split("#");
         String[] part       = commands[0].split(":");
@@ -159,16 +140,7 @@ public class MessageDecorder {
             x       =Integer.parseInt(coordinate.split(",")[0]);
             y       =Integer.parseInt(coordinate.split(",")[1]);
             players[i-1]=new Location(i-1, x, y, direc);
-        }
-        
-//        //test-------------------------------------------------------------------
-//        for(int i=0;i<playerCount;i++){
-//            System.out.println("Player "+players[i].playerID);
-//            System.out.println("Position : "+players[i].x+","+players[i].y);
-//            System.out.println("Direction: "+players[i].direction);
-//        }
-//        //test over--------------------------------------------------------------
-        
+        }        
     }
     
     public void globalUpdate(){
@@ -259,8 +231,8 @@ public class MessageDecorder {
         coins.add(cp);
     }
     
-    //this main method is for testing purposes
-    public static void main(String args[]){
-        new MessageDecorder().processMessage("G:P0;0,0;0;0;100;0;0:5,8,0;7,8,0;2,6,0;6,8,0;8,6,0#");
-    }
+//    //this main method is for testing purposes
+//    public static void main(String args[]){
+//        new MessageDecorder().processMessage("G:P0;0,0;0;0;100;0;0:5,8,0;7,8,0;2,6,0;6,8,0;8,6,0#");
+//    }
 }

@@ -23,8 +23,9 @@ public class Armored {
         // TODO code application logic here
         //(new Sender("localhost", 6000)).start();
         //(new Receiver("localhost", 7000)).start();
-       // new ControlPanel();
-        UI.Game game = new UI.Game();
+        new ControlPanel();
+        //UI.Game game = new UI.Game();
+        
         
     }
 }

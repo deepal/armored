@@ -5,6 +5,7 @@
 package UI;
 
 
+import Networking.Sender;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
@@ -17,6 +18,7 @@ public class Game extends StateBasedGame{
     public static final String GAME_NAME = "Armored";
     public static final int menu = 0;
     public static final int play = 1;
+    public static Sender SENDER;
     public static int CELL_WIDTH = 32;
     public static int GRID_PARAMETER = 20;
     public static int WINDOW_HEIGHT = GRID_PARAMETER*CELL_WIDTH;
@@ -33,6 +35,7 @@ public class Game extends StateBasedGame{
         try{            
             appgc = new AppGameContainer(new Game());
             appgc.setDisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT, false);
+            appgc.setTargetFrameRate(15);
             appgc.start();
         }
         catch(SlickException ex){

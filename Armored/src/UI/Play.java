@@ -4,9 +4,12 @@
  */
 package UI;
 
+import GameObjects.Bot;
 import GameObjects.BrickWall;
 import GameObjects.CoinPile;
 import GameObjects.LifePack;
+import GameObjects.StoneWall;
+import GameObjects.TankController;
 import Networking.Receiver;
 import Networking.Sender;
 import java.awt.Point;
@@ -16,6 +19,8 @@ import UI.MessageDecorder;
 import java.util.Iterator;
 import sun.swing.UIAction;
 import UI.Game;
+import java.util.ArrayList;
+import org.lwjgl.opencl.INTELImmediateExecution;
 
 /**
  *
@@ -25,19 +30,24 @@ public class Play extends BasicGameState {
 
     Image tree, grassland, ground, water, brickwall, stonewall, bullet, smoke, tank;
     String mouse;
-    int xPos, yPos;
+    float xPos =0, yPos =0;
     Animation moveUp, moveDown, moveRight, moveLeft, shoot;
     int[] duration = {};
     Point[] blockList;
-
+    float animation = 0;
+    ArrayList<Bullet> bullets;
+    TankController tc;
+    
     public Play(int state) {
-        xPos = 100;
-        yPos = 100;
+        
         Sender messageSender;
         messageSender=new Sender("localhost", 6000);
+        tc = new TankController(messageSender);
         Receiver messageReceiver=new Receiver("localhost", 7000);
         messageReceiver.start();
         messageSender.sendMessage(Sender.JOIN);
+        Game.SENDER = messageSender;
+        bullets = new ArrayList<Bullet>();
     }
 
     @Override
@@ -54,12 +64,13 @@ public class Play extends BasicGameState {
         brickwall = new Image("res/brick"+Game.CELL_WIDTH+".jpg");
         stonewall = new Image("res/rocks"+Game.CELL_WIDTH+".png");
         tank = new Image("res/p5-up"+Game.CELL_WIDTH+".png");
-
+        
+        
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
-
+        
 //        grphcs.drawString(mouse, 50, 50);
         for (int i = 0; i < UI.Game.GRID_PARAMETER; i++) {
             for (int j = 0; j < UI.Game.GRID_PARAMETER; j++) {
@@ -74,50 +85,31 @@ public class Play extends BasicGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-//        Input input = gc.getInput();
-//
-//        if (input.isKeyPressed(Input.KEY_UP)) {
-//            moveUp();
-//        }
-//        if (input.isKeyPressed(Input.KEY_DOWN)) {
-//            moveDown();
-//        }
-//        if (input.isKeyPressed(Input.KEY_LEFT)) {
-//            moveLeft();
-//        }
-//        if (input.isKeyPressed(Input.KEY_RIGHT)) {
-//            moveRight();
-//        }
-    }
-
-//    public void moveUp() throws SlickException {
-//        tank = new Image("res/p5-up.png");
-//        yPos -= 48;
-//    }
-//
-//    public void moveDown() throws SlickException {
-//        tank = new Image("res/p5-down.png");
-//        yPos += 48;
-//    }
-//
-//    public void moveLeft() throws SlickException {
-//        tank = new Image("res/p5-left.png");
-//        xPos -= 48;
-//    }
-//
-//    public void moveRight() throws SlickException {
-//        tank = new Image("res/p5-right.png");
-//        xPos += 48;
-//    }
-
-    public boolean isBlocked() {
-        return true;
+        Input ip = gc.getInput();
+        if(ip.isKeyPressed(Input.KEY_LEFT)){
+            tc.moveLeft();
+        }
+        if(ip.isKeyPressed(Input.KEY_RIGHT)){
+            tc.moveRight();
+        }
+        if(ip.isKeyPressed(Input.KEY_DOWN)){
+            tc.moveDown();
+        }
+        if(ip.isKeyPressed(Input.KEY_UP)){
+            tc.moveUp();
+        }
+        if(ip.isKeyPressed(Input.KEY_SPACE)){
+            tc.shoot();
+        }
+        
     }
     
     public void updateTexture() throws SlickException{
         drawBots();
         drawLand();
         drawTreasure();
+        drawCannons();
+        //testDrawBullet();
     }
     
     public void drawBots() throws SlickException{  
@@ -172,7 +164,7 @@ public class Play extends BasicGameState {
         }
         
         for(int i=0;i<MessageDecorder.water.size();i++){
-            water = new Image("res/water"+Game.CELL_WIDTH+".png");
+            water = new Image("res/water1"+Game.CELL_WIDTH+".jpg");
             water.draw((MessageDecorder.water.get(i)).location.x*Game.CELL_WIDTH, (MessageDecorder.water.get(i)).location.y*Game.CELL_WIDTH);
         }
         
@@ -206,12 +198,74 @@ public class Play extends BasicGameState {
         
     }
     
-    public void drawCannons(){
+
+    
+    public void drawCannons() throws SlickException{
         for(int i=0;i<MessageDecorder.playerCount;i++){
-            if(MessageDecorder.bots[i].shoots==1){
-                
+            Bot bot = MessageDecorder.bots[i];
+            if(bot.shoots==1){
+                bullets.add(new Bullet(bot.x, bot.y, bot.direction));  
+                bot.shoots=0;
             }
         }
+        drawCannonAnimation();
+    }
+    
+    public void drawCannonAnimation() throws SlickException{
+        Image cannon = new Image("res/cannonball"+Game.CELL_WIDTH+".png");
+        for(int i=0;i<bullets.size();i++){
+            Bullet b=bullets.get(i);
+            b.blocked = isBlocked(b.x, b.y);
+            if(b.blocked){
+                cannon = new Image("res/brick-d4"+Game.CELL_WIDTH+".png");
+            }
+            else{
+                cannon = new Image("res/cannonball"+Game.CELL_WIDTH+".png");
+            }
+            
+            cannon.draw(b.x*Game.CELL_WIDTH, b.y*Game.CELL_WIDTH);
+            switch(b.direction){
+                case 0:
+                    b.y -= 0.3;break;
+                case 1:
+                    b.x += 0.3;break;
+                case 2:
+                    b.y += 0.3;break;
+                case 3:
+                    b.x -= 0.3;break;
+                default:
+                    break;
+            }
+        }
+    }
+    
+    public boolean isBlocked(float x, float y){
+        for(int i=0;i<MessageDecorder.playerCount;i++){
+            if(Math.floor(x)==MessageDecorder.bots[i].x && Math.floor(y)==MessageDecorder.bots[i].y){
+                System.err.println("Bullet Blocked!");
+                return true;
+            }
+        }
+        for(int i=0;i<MessageDecorder.bricks.size();i++){
+            BrickWall br = MessageDecorder.bricks.get(i);
+            if((Math.floor(x)==br.location.x && Math.floor(y)==br.location.y) && (br.damageLevel!=4)){
+                System.err.println("Bullet Blocked!");
+                return true;
+            }
+        }
+        for(int i=0;i<MessageDecorder.stoneWall.size();i++){
+            StoneWall st = MessageDecorder.stoneWall.get(i);
+            if(Math.floor(x)==st.location.x && Math.floor(y)==st.location.y){
+                System.err.println("Bullet Blocked!");
+                return true;
+            }
+        }
+        
+        if(x>Game.GRID_PARAMETER || x<0 || y>Game.GRID_PARAMETER || y<0){
+            return true;
+        }
+        
+        return false;
     }
 
 }
