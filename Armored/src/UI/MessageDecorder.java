@@ -54,7 +54,7 @@ public class MessageDecorder extends java.util.Observable{
         
         for(int i=0;i< Game.GRID_PARAMETER;i++){
             for(int j=0;j< Game.GRID_PARAMETER;j++){
-                
+                map[i][j]='N';
             }
         }
     }
@@ -223,6 +223,37 @@ public class MessageDecorder extends java.util.Observable{
             }
         }   
         Play.ctrl.act();
+        
+        for(int i=0;i<MessageDecorder.bricks.size();i++){
+            BrickWall b = MessageDecorder.bricks.get(i);
+            
+            map[b.location.x][b.location.y] = 'B';
+        }
+        
+        for(int i=0;i<MessageDecorder.stoneWall.size();i++){
+            StoneWall st = MessageDecorder.stoneWall.get(i);
+            
+            map[st.location.x][st.location.y] = 'S';
+        }
+        
+        for(int i=0;i<MessageDecorder.water.size();i++){
+            Water w = MessageDecorder.water.get(i);
+            
+            map[w.location.x][w.location.y] = 'W';
+        }
+        
+        for(int i=0;i<MessageDecorder.coins.size();i++){
+            CoinPile c = MessageDecorder.coins.get(i);
+            
+            map[c.location.x][c.location.y] = 'C';
+        }
+        
+        for(int i=0;i<MessageDecorder.lifePacks.size();i++){
+            LifePack l = MessageDecorder.lifePacks.get(i);
+            
+            map[l.location.x][l.location.y] = 'L';
+        }
+        
     }
     
     public void lifePackMessage(){

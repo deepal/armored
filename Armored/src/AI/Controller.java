@@ -43,8 +43,21 @@ public class Controller {
 
         int x = MessageDecorder.bots[MessageDecorder.myID].x;
         int y = MessageDecorder.bots[MessageDecorder.myID].y;
-        int xN = 0, yN = 0;
         int direc = MessageDecorder.bots[MessageDecorder.myID].direction;
+
+        for (int i = 0; i < MessageDecorder.playerCount; i++) {
+            if ((MessageDecorder.bots[i].x == x || MessageDecorder.bots[i].y == y) && (i!=MessageDecorder.myID)) {
+                try {
+                    Thread.sleep(1000);
+                    tc.shoot();                   
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        int xN = 0, yN = 0;
+
         switch (direc) {
             case 0:
                 xN = x;
@@ -77,13 +90,10 @@ public class Controller {
                 case 3:
                     tc.moveLeft();
                     break;
-
             }
-
 
         } else {
             randomMove(MessageDecorder.bots[MessageDecorder.myID].direction);
-
         }
     }
 
