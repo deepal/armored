@@ -5,6 +5,7 @@
 package UI;
 
 
+import AI.Controller;
 import Networking.Sender;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
@@ -19,8 +20,8 @@ public class Game extends StateBasedGame{
     public static final int menu = 0;
     public static final int play = 1;
     public static Sender SENDER;
-    public static int CELL_WIDTH = 32;
-    public static int GRID_PARAMETER = 20;
+    public static int CELL_WIDTH = 48;
+    public static int GRID_PARAMETER = 10;
     public static int WINDOW_HEIGHT = GRID_PARAMETER*CELL_WIDTH;
     public static int WINDOW_WIDTH = GRID_PARAMETER*CELL_WIDTH+400;
     

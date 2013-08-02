@@ -5,6 +5,7 @@
 package UI;
 
 
+import AI.Controller;
 import GameObjects.Bot;
 import GameObjects.BrickWall;
 import GameObjects.CoinPile;
@@ -14,12 +15,14 @@ import GameObjects.Water;
 import java.awt.Point;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import UI.Game;
+
 
 /**
  *
  * @author Deepal
  */
-public class MessageDecorder {
+public class MessageDecorder extends java.util.Observable{
     
     public Location[] players;
     
@@ -35,7 +38,10 @@ public class MessageDecorder {
     public static int playerCount;
     public String message;
     
+    public static char[][] map = new char[20][20];
+    
     public MessageDecorder(){
+        
         bots=new Bot[5];
         for(int k=0;k<5;k++){
             bots[k]=new Bot();
@@ -45,7 +51,15 @@ public class MessageDecorder {
         stoneWall =new ArrayList<StoneWall>();
         coins = new ArrayList<CoinPile>();
         lifePacks = new ArrayList<LifePack>();
+        
+        for(int i=0;i< Game.GRID_PARAMETER;i++){
+            for(int j=0;j< Game.GRID_PARAMETER;j++){
+                
+            }
+        }
     }
+    
+    
     
     public void processMessage(String message){
         this.message=message;
@@ -60,6 +74,9 @@ public class MessageDecorder {
         }
         else if(message.equals("GAME_ALREADY_STARTED#")){
             System.out.println("You cannot join the game once it is started!");
+        }
+        else if(message.equals("CELL_OCCUPIED#")){
+            System.out.println("Cell occupied!");
         }
         else if(message.equals("TOO_QUICK#")){
             
@@ -143,6 +160,7 @@ public class MessageDecorder {
             y       =Integer.parseInt(coordinate.split(",")[1]);
             players[i-1]=new Location(i-1, x, y, direc);
         }        
+        
     }
     
     public void globalUpdate(){
@@ -203,8 +221,8 @@ public class MessageDecorder {
                     MessageDecorder.coins.remove(j);
                 }
             }
-        }
-        
+        }   
+        Play.ctrl.act();
     }
     
     public void lifePackMessage(){
@@ -231,6 +249,7 @@ public class MessageDecorder {
         //cp.start();
         coins.add(cp);
     }
+    
     
 //    //this main method is for testing purposes
 //    public static void main(String args[]){

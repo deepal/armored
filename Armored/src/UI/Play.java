@@ -4,6 +4,7 @@
  */
 package UI;
 
+import AI.Controller;
 import GameObjects.Bot;
 import GameObjects.BrickWall;
 import GameObjects.CoinPile;
@@ -49,24 +50,16 @@ public class Play extends BasicGameState {
     TankController tc;
     Animation water;
     int[][] scores;
+    public static Controller ctrl;
     
     public Play(int state) {
 
-        Sender messageSender;
-        messageSender = new Sender("localhost", 6000);
-        tc = new TankController(messageSender);
-        Receiver messageReceiver = new Receiver("localhost", 7000);
-        messageReceiver.start();
-        messageSender.sendMessage(Sender.JOIN);
-        Game.SENDER = messageSender;
+        ctrl = new Controller();
+        System.out.println(Game.SENDER.toString());
         bullets = new ArrayList<Bullet>();
+        tc = Controller.tc;
+        
         scores = new int[5][4];
-        //test
-//        for(int i=0;i<5;i++){
-//            for(int j=0;j<4;j++){
-//                scores[i][j]=0;
-//            }
-//        }
     }
 
     @Override

@@ -16,6 +16,7 @@ public class TankController{
     
     public TankController(Sender messageSender){
         this.sender=messageSender;
+        //sender = UI.Game.SENDER;
     }
     
     
